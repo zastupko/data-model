@@ -120,8 +120,8 @@
                   "type": "string"
                 },
                 "do": {
-                  "description": "Poslední datum zasedání, ke kterému osoba přísluší k danému subjektu ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Poslední datum zasedání, ke kterému osoba přísluší k danému subjektu ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "lidrSubjektu": {
@@ -132,8 +132,8 @@
                   ]
                 },
                 "od": {
-                  "description": "První datum zasedání, od kterého osoba přísluší k danému subjektu ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "První datum zasedání, od kterého osoba přísluší k danému subjektu ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "poradiZastupitelstva": {
@@ -197,8 +197,8 @@
               "type": "object",
               "properties": {
                 "do": {
-                  "description": "Datum posledního zasedání, pro které platí sjednaná koalice, ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum posledního zasedání, pro které platí sjednaná koalice, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "idPolitickeSubjekty": {
@@ -211,8 +211,8 @@
                   }
                 },
                 "od": {
-                  "description": "Datum prvního zasedání, pro které platí sjednaná koalice, ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum prvního zasedání, pro které platí sjednaná koalice, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 }
               },
@@ -232,8 +232,8 @@
                   "type": "integer"
                 },
                 "do": {
-                  "description": "Datum posledního zasedání, které lídr vedl, ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum posledního zasedání, které lídr vedl, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "funkce": {
@@ -242,8 +242,8 @@
                   "type": "string"
                 },
                 "od": {
-                  "description": "Datum prvního zasedání, které lídr vedl, ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum prvního zasedání, které lídr vedl, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 }
               },
@@ -273,13 +273,13 @@
                   "type": "string"
                 }, 
                 "datum": {
-                  "description": "Datum zasedání ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum zasedání ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 }, 
                 "do": {
-                  "description": "Datum ukončení zasedání ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum ukončení zasedání ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "hlasovani": {
@@ -467,8 +467,8 @@
                   "type": "integer"
                 },
                 "od": {
-                  "description": "Datum zahájení zasedání ve formátu DD.MM.YYYY",
-                  "pattern": "^[0-9]{2}.[0-9]{2}.[0-9]{4}$",
+                  "description": "Datum zahájení zasedání ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
                 },
                 "url": {
