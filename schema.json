@@ -1,0 +1,508 @@
+{
+  "title": "City Councils Decision-Making",
+  "description": "General Model for City Councils Decision-Making Data",
+  "type": "object",
+  "properties": {
+    "municipality": {
+      "description": "Basic data on municipal self-government",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the body (e.g. Brno City Council)",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "officialWebUrl": {
+          "description": "Link to the official municipality website",
+          "maxLength": 50,
+          "type": "string"
+        }
+      },
+      "required": [ "name" ]
+    },
+    "politicalEntities": {
+      "description": "Array with information about political entities",
+      "type": "array",
+      "items": {
+        "description": "Record of a specific political party (or coalition) appearing in the voting records",
+        "type": "object",
+        "properties": {
+          "color": {
+            "description": "Colour of political entity",
+            "maxLength": 7,
+            "pattern": "^#[0-9,a-z,A-Z]{6}$",
+            "type": "string"
+          },
+          "id": {
+            "description": "Unique identifier of the political entity",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "fullName": {
+            "description": "Full name of political entity",
+            "maxLength": 150,
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Short name of the political entity (from the voting record)",
+            "maxLength": 50,
+            "type": "string"
+          }
+        },
+        "required": [ "id", "shortName" ]
+      }
+    },
+    "representatives": {
+      "description": "Array with information about members of the council",
+      "type": "array",
+      "items": {
+        "description": "Record of a specific person appearing in the voting records",
+        "type": "object",
+        "properties": {
+          "aliases": {
+            "description": "Array of previou names of the person (for cases of marriage, divorce, etc.)",
+            "type": "array",
+            "items": {
+              "description": "Record of a specific previous name",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "description": "Previous name of the person",
+                  "maxLength": 50,
+                  "type": "string"
+                },
+                "orderCouncil": {
+                  "description": "Order of council (membership should be clearly assigned to the term of office)",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "surname": {
+                  "description": "Previous surname of the person",
+                  "maxLength": 50,
+                  "type": "string"
+                }
+              },
+              "required": [ "surname" ]
+            }
+          },
+          "id": {
+            "description": "Unique identifier of the person",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "name": {
+            "description": "Actual name of the person",
+            "maxLength": 50,
+            "type": "string"
+          },
+          "sex": {
+            "description": "Sex of the person",
+            "oneOf": [
+              {"const": false, "description": "Male"},
+              {"const": true, "description": "Female"}
+            ]
+          },
+          "politicalEntities": {
+            "description": "Array of political entities of which the person was a member",
+            "type": "array",
+            "items": {
+              "description": "Record of membership of one political entity",
+              "type": "object",
+              "properties": {
+                "idPoliticalEntity": {
+                  "description": "Unique identifier of the political entity",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "memberPartyShortName": {
+                  "description": "Short name of the 'home' party (in the case of a coalition)",
+                  "maxLength": 50,
+                  "type": "string"
+                },
+                "to": {
+                  "description": "The last date of the sitting on which the person belongs to the entity in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "isLeader": {
+                  "description": "Leadership position in a political entity",
+                  "oneOf": [
+                    {"const": false, "description": "Regular member"},
+                    {"const": true, "description": "Leader"}
+                  ]
+                },
+                "from": {
+                  "description": "The first date of the sitting from which the person belongs to the entity in the YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "orderCouncil": {
+                  "description": "Order of council (membership should be clearly assigned to the term of office)",
+                  "minimum": 1,
+                  "type": "integer"
+                }
+              },
+              "required": [ "idPoliticalEntity", "to", "from", "orderCouncil" ]
+            }
+          },
+          "surname": {
+            "description": "Actual surname of the person",
+            "maxLength": 50,
+            "type": "string"
+          },
+          "cityBoard": {
+            "description": "Information about membership in the City Board",
+            "type": "object",
+            "properties": {
+              "member": {
+                "description": "Membership of a person in the City Board",
+                "oneOf": [
+                  {"const": false, "description": "No"},
+                  {"const": true, "description": "Yes"}
+                ]
+              },
+              "function": {
+                "description": "If a person is a member of the City Board, what office does the representative hold",
+                "maxLength": 100,
+                "type": "string"
+              }
+            }
+          },
+          "titles": {
+            "description": "Titles of the person (before and after the name together)",
+            "maxLength": 50,
+            "type": "string"
+          }
+        },
+        "required": [ "id", "name", "sex", "politicalEntities", "surname" ]
+      }
+    },
+    "councils": {
+      "description": "Array with information about specific councils",
+      "type": "array",
+      "items": {
+        "description": "Record of the council for one term (all sittings and voting records)",
+        "type": "object",
+        "properties": {
+          "to": {
+            "description": "Year in which the council's term of office ends",
+            "pattern": "^[0-9]{4}$",
+            "type": "integer"
+          },
+          "coalition": {
+            "description": "Array of coalitions for one term",
+            "type": "array",
+            "items": {
+              "description": "Record of one coalition for the term of office",
+              "type": "object",
+              "properties": {
+                "to": {
+                  "description": "Date of the last meeting for which the agreed coalition is valid, in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "idPoliticalEntities": {
+                  "description": "Array of unique identifiers of political entities",
+                  "type": "array",
+                  "items": {
+                    "description": "Unique identifier of the political entity",
+                    "minimum": 1,
+                    "type": "integer"
+                  }
+                },
+                "from": {
+                  "description": "Date of the first meeting for which the agreed coalition is valid, in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                }
+              },
+              "required": [ "to", "idPoliticalEntities", "from" ]
+            }
+          },
+          "leader": {
+            "description": "",
+            "type": "array",
+            "items": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "idRepresentative": {
+                  "description": "Unique identifier of the person",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "to": {
+                  "description": "Date of the last sitting led by the leader, in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "function": {
+                  "description": "Function as a leader in the city council (e.g. the Mayoress of the City of Brno)",
+                  "maxLength": 50,
+                  "type": "string"
+                },
+                "from": {
+                  "description": "Date of the first sitting led by the leader, in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                }
+              },
+              "required": [ "idRepresentative", "to", "function", "from" ]
+            }
+          },
+          "from": {
+            "description": "Year in which the council's term of office begins",
+            "pattern": "^[0-9]{4}$",
+            "type": "integer"
+          },
+          "orderCouncil": {
+            "description": "Order of council",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "sittings": {
+            "description": "Array of all sittings per term of office",
+            "type": "array",
+            "items": {
+              "description": "Record of one sitting",
+              "type": "object",
+              "properties": {
+                "number": {
+                  "description": "Sitting number",
+                  "maxLength": 10,
+                  "type": "string"
+                }, 
+                "date": {
+                  "description": "Sitting date in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                }, 
+                "to": {
+                  "description": "End date of the sitting in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "votingRecords": {
+                  "description": "Array of all voting records within one sitting",
+                  "type": "array",
+                  "items": {
+                    "description": "One voting record",
+                    "type": "object",
+                    "properties": {
+                      "blockVoting": {
+                        "description": "Block voting",
+                        "oneOf": [
+                          {"const": false, "description": "No"},
+                          {"const": true, "description": "Yes"}
+                        ]
+                      },
+                      "time": {
+                        "description": "Time of voting in hh:mm:ss format",
+                        "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+                        "type": "string"
+                      },
+                      "number": {
+                        "description": "Voting number",
+                        "maxLength": 10,
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "Unique voting identifier",
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "valid": {
+                        "description": "Valid vote",
+                        "oneOf": [
+                          {"const": false, "description": "No"},
+                          {"const": true, "description": "Yes"}
+                        ]
+                      },
+                      "accepted": {
+                        "description": "Voting result",
+                        "oneOf": [
+                          {"const": false, "description": "Declined"},
+                          {"const": true, "description": "Accepted"}
+                        ]
+                      },
+                      "procedural": {
+                        "description": "Procedural voting",
+                        "oneOf": [
+                          {"const": false, "description": "No"},
+                          {"const": true, "description": "Yes"}
+                        ]
+                      },
+                      "discussed": {
+                        "description": "Array (due to block votes) of voting topics",
+                        "type": "array",
+                        "items": {
+                          "description": "Record of one voting topic",
+                          "type": "object",
+                          "properties": {
+                            "resolutionNumber": {
+                              "description": "Resolution number",
+                              "maxLength": 50,
+                              "type": "string"
+                            },
+                            "votingTopicDetail": {
+                              "description": "Voting topic detail",
+                              "maxLength": 500,
+                              "type": "string"
+                            },
+                            "id": {
+                              "description": "Unique identifier of the voting topic",
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "keywords": {
+                              "description": "Array of keywords",
+                              "type": "array",
+                              "items": {
+                                "description": "Keyword",
+                                "maxLength": 50,
+                                "type": "string"
+                              }
+                            },
+                            "votingTopic": {
+                              "description": "Voting topic",
+                              "maxLength": 500,
+                              "type": "string"
+                            },
+                            "linkProposal": {
+                              "description": "Link to the proposal on the voting topic",
+                              "maxLength": 50,
+                              "type": "string"
+                            }
+                          },
+                          "required": [ "votingTopic" ]
+                        }
+                      },
+                      "summary": {
+                        "description": "Summary votes (if individual votes are not available)",
+                        "type": "object",
+                        "properties": {
+                          "A": {
+                            "description": "Number of voters for/yes",
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "N": {
+                            "description": "Number of voters against/no",
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "O": {
+                            "description": "Number of voters who were excused from the sitting",
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "X": {
+                            "description": "Number of voters who did not vote",
+                            "minimum": 0,
+                            "type": "integer"
+                          },
+                          "Z": {
+                            "description": "Number of voters who abstained from voting",
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "secret": {
+                        "description": "Secret voting",
+                        "oneOf": [
+                          {"const": false, "description": "No"},
+                          {"const": true, "description": "Yes"}
+                        ]
+                      },
+                      "linkProtocol": {
+                        "description": "Link to the voting record",
+                        "maxLength": 150,
+                        "type": "string"
+                      },
+                      "representativeVotes": {
+                        "description": "Votes of individual representatives",
+                        "type": "array",
+                        "items": {
+                          "description": "A record of one vote from one person",
+                          "type": "object",
+                          "properties": {
+                            "idRepresentative": {
+                              "description": "Unique identifier of the person",
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "vote": {
+                              "description": "Voting option",
+                              "oneOf": [
+                                {"const": "–", "description": "Absent"},
+                                {"const": "A", "description": "Yes/for"},
+                                {"const": "N", "description": "No/against"},
+                                {"const": "O", "description": "Excused"},
+                                {"const": "X", "description": "Did not vote"},
+                                {"const": "Z", "description": "Abstained"}
+                              ]
+                            },
+                            "inPerson": {
+                              "description": "The form of voting",
+                              "oneOf": [
+                                {"const": false, "description": "Distance"},
+                                {"const": true, "description": "In person"}
+                              ]
+                            }
+                          },
+                          "required": [ "idRepresentative", "vote" ]
+                        }
+                      }
+                    },
+                    "oneOf": [
+                      { "required": [ "number", "accepted", "discussed", "summary" ] },
+                      { "required": [ "number", "accepted", "discussed", "representativeVotes" ] }
+                    ]
+                  }
+                },
+                "id": {
+                  "description": "Unique identifier of the sitting",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "from": {
+                  "description": "Start date of the sitting in YYYY-MM-DD format",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "link": {
+                  "description": "Links to the sitting on the municipality website",
+                  "type": "object",
+                  "properties": {
+                    "minutes": {
+                      "description": "Link to the sitting minutes",
+                      "maxLength": 50,
+                      "type": "string"
+                    },
+                    "sitting": {
+                      "description": "Link to the sitting materials",
+                      "maxLength": 50,
+                      "type": "string"
+                    },
+                    "videoRecord": {
+                      "description": "Link to the video record of the sitting",
+                      "maxLength": 50,
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "oneOf": [
+                { "required": [ "number", "date", "votingRecords" ] },
+                { "required": [ "number", "to", "votingRecords", "from" ] }
+              ]
+            }
+          }
+        },
+        "required": [ "to", "coalition", "leader", "from", "orderCouncil", "sittings" ]
+      }
+    }
+  },
+  "required": [ "municipality", "politicalEntities", "representatives", "councils" ]
+}
