@@ -476,7 +476,7 @@
                   "type": "object",
                   "properties": {
                     "minutes": {
-                      "description": "Link to the sitting minutes",
+                      "description": "Link to the meeting minutes",
                       "maxLength": 50,
                       "type": "string"
                     },
