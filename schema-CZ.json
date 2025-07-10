@@ -440,7 +440,8 @@
                                 {"const": "N", "description": "Ne/proti"},
                                 {"const": "O", "description": "Omluven/a"},
                                 {"const": "X", "description": "Nehlasoval/a"},
-                                {"const": "Z", "description": "Zdržel/a se"}
+                                {"const": "Z", "description": "Zdržel/a se"},
+                                {"const": "T", "description": "Tajná"}
                               ]
                             },
                             "prezencne": {
