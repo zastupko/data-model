@@ -440,7 +440,8 @@
                                 {"const": "N", "description": "No/against"},
                                 {"const": "O", "description": "Excused"},
                                 {"const": "X", "description": "Did not vote"},
-                                {"const": "Z", "description": "Abstained"}
+                                {"const": "Z", "description": "Abstained"},
+                                {"const": "T", "description": "Secret"}
                               ]
                             },
                             "inPerson": {
