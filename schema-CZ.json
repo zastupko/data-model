@@ -150,6 +150,11 @@
             "maxLength": 50,
             "type": "string"
           },
+          "datumNarozeni": {
+            "description": "Datum narození osoby osoby",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "type": "string"
+          },
           "radaMesta": {
             "description": "Informace o členství v radě města",
             "type": "object",
@@ -250,6 +255,44 @@
               "required": [ "idZastupitel", "do", "funkce", "od" ]
             }
           },
+          "vedeni": {
+            "description": "seznam všech členů, kteří jsou součástí vedení orgánu",
+            "type": "array",
+            "items": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "idZastupitel": {
+                  "description": "Jedinečný identifikátor osoby",
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "do": {
+                  "description": "Datum posledního zasedání, kdy byl člen součástí vedení, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "funkce": {
+                  "description": "Funkce lídra v zastupitelstvu (např. primátorka města Brna)",
+                  "maxLength": 50,
+                  "type": "string"
+                },
+                "od": {
+                  "description": "Datum prvního zasedání, kdy byl člen součástí vedení, ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "lidr": {
+                  "description": "Pozice v rámci vedení",
+                  "oneOf": [
+                    {"const": true, "description": "Lídr vedení"},
+                    {"const": false, "description": "Jiný člen vedení"}
+                  ]
+                }
+              },
+              "required": [ "idZastupitel", "do", "funkce", "od", "lidr" ]
+            }
+          },
           "od": {
             "description": "Rok, ve kterém zastupitelstvu začíná funkční období",
             "pattern": "^[0-9]{4}$",
@@ -269,15 +312,22 @@
               "properties": {
                 "cislo": {
                   "description": "Číslo zasedání",
-                  "maxLength": 10,
-                  "type": "string"
+                  "oneOf": [
+                    {"type": "integer", "minimum": 1},
+                    {"type": "string", "maxLength": 10}
+                  ]
                 }, 
                 "datum": {
                   "description": "Datum zasedání ve formátu YYYY-MM-DD",
                   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
-                }, 
-                "do": {
+                },
+                "datumOd": {
+                  "description": "Datum začátku zasedání ve formátu YYYY-MM-DD",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+                  "type": "string"
+                },
+                "datumDo": {
                   "description": "Datum ukončení zasedání ve formátu YYYY-MM-DD",
                   "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
                   "type": "string"
@@ -297,14 +347,23 @@
                         ]
                       },
                       "cas": {
-                        "description": "Čas hlasování ve formátu hh:mm:ss",
-                        "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$",
-                        "type": "string"
+                        "description": "Čas hlasování ve formátu hh:mm:ss nebo yyyy-mm-dd hh:mm:ss",
+                        "type": "string",
+                        "oneOf": [
+                          {
+                            "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+                          },
+                          {
+                            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$"
+                          }
+                        ]
                       },
                       "cislo": {
                         "description": "Číslo hlasování",
-                        "maxLength": 10,
-                        "type": "string"
+                        "oneOf": [
+                          {"type": "integer", "minimum": 1},
+                          {"type": "string", "maxLength": 10}
+                        ]
                       },
                       "id": {
                         "description": "Jedinečný identifikátor hlasování",
@@ -420,6 +479,11 @@
                         "maxLength": 150,
                         "type": "string"
                       },
+                      "dokumenty": {
+                        "description": "Identifikátor dokumentu k danému hlasování",
+                        "minimum": 1,
+                        "type": "integer"
+                      },
                       "zastupiteleHlasy": {
                         "description": "Hlasy jednotlivých zastupitelů",
                         "type": "array",
@@ -467,11 +531,6 @@
                   "minimum": 1,
                   "type": "integer"
                 },
-                "od": {
-                  "description": "Datum zahájení zasedání ve formátu YYYY-MM-DD",
-                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-                  "type": "string"
-                },
                 "url": {
                   "description": "Odkazy k zasedání na webu municipality",
                   "type": "object",
@@ -496,12 +555,58 @@
               },
               "oneOf": [
                 { "required": [ "cislo", "datum", "hlasovani" ] },
-                { "required": [ "cislo", "do", "hlasovani", "od" ] }
+                { "required": [ "cislo", "datumDo", "hlasovani", "datumOd" ] }
               ]
             }
           }
         },
-        "required": [ "do", "koalice", "lidr", "od", "poradiZastupitelstva", "zasedani" ]
+        "oneOf": [
+          {
+            "required": [ "do", "koalice", "lidr", "od", "poradiZastupitelstva", "zasedani" ]
+          },
+          {
+            "required": [ "do", "koalice", "vedeni", "od", "poradiZastupitelstva", "zasedani" ]
+          }
+        ]
+      }
+    },
+    "dokumenty": {
+      "description": "Pole s informacemi o dokumentech vytvořených v rámci hlasování orgánu",
+      "type": "array",
+      "items": {
+        "description": "Záznam o dokumentu",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Identifikátor dokumentu",
+            "minimum": 1,
+            "type": "integer"
+          },
+          "nazev": {
+            "description": "Název dokumentu",
+            "type": "string",
+            "maxLength": 255
+          },
+          "typDokumentu": {
+            "description": "Konkrétní typ dokumentu (např. příloha k hlasování)"
+          },
+          "url": {
+            "description": "Konkrétní URL k dokumentu",
+            "type": ["string","null"],
+            "maxLength": 255
+          },
+          "popis": {
+            "description": "Stručný popis obsahu dokumentu",
+            "type": ["string","null"],
+            "maxLength": 255
+          },
+          "idNadrazenyDokument": {
+            "description": "ID nadřazeného dokumentu",
+            "minimum": 1,
+            "type": ["integer", "null"]
+          }
+        },
+        "required": ["id", "nazev", "typDokumentu"]
       }
     }
   },
