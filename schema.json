@@ -224,37 +224,6 @@
               "required": [ "to", "idPoliticalEntities", "from" ]
             }
           },
-          "leader": {
-            "description": "",
-            "type": "array",
-            "items": {
-              "description": "",
-              "type": "object",
-              "properties": {
-                "idRepresentative": {
-                  "description": "Unique identifier of the person",
-                  "minimum": 1,
-                  "type": "integer"
-                },
-                "to": {
-                  "description": "Date of the last sitting led by the leader, in YYYY-MM-DD format",
-                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-                  "type": "string"
-                },
-                "function": {
-                  "description": "Function as a leader in the city council (e.g. the Mayoress of the City of Brno)",
-                  "maxLength": 50,
-                  "type": "string"
-                },
-                "from": {
-                  "description": "Date of the first sitting led by the leader, in YYYY-MM-DD format",
-                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-                  "type": "string"
-                }
-              },
-              "required": [ "idRepresentative", "to", "function", "from" ]
-            }
-          },
           "leadership": {
             "description": "array of all deputies that were part of the leadership of the council",
             "type": "array",

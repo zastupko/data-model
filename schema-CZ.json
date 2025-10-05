@@ -224,37 +224,6 @@
               "required": [ "do", "idPolitickeSubjekty", "od" ]
             }
           },
-          "lidr": {
-            "description": "",
-            "type": "array",
-            "items": {
-              "description": "",
-              "type": "object",
-              "properties": {
-                "idZastupitel": {
-                  "description": "Jedinečný identifikátor osoby",
-                  "minimum": 1,
-                  "type": "integer"
-                },
-                "do": {
-                  "description": "Datum posledního zasedání, které lídr vedl, ve formátu YYYY-MM-DD",
-                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-                  "type": "string"
-                },
-                "funkce": {
-                  "description": "Funkce lídra v zastupitelstvu (např. primátorka města Brna)",
-                  "maxLength": 50,
-                  "type": "string"
-                },
-                "od": {
-                  "description": "Datum prvního zasedání, které lídr vedl, ve formátu YYYY-MM-DD",
-                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-                  "type": "string"
-                }
-              },
-              "required": [ "idZastupitel", "do", "funkce", "od" ]
-            }
-          },
           "vedeni": {
             "description": "seznam všech členů, kteří jsou součástí vedení orgánu",
             "type": "array",
