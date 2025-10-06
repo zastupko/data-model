@@ -517,10 +517,7 @@
                   }
                 }
               },
-              "oneOf": [
-                { "required": [ "cislo", "datum", "hlasovani" ] },
-                { "required": [ "cislo", "datumDo", "hlasovani", "datumOd" ] }
-              ]
+              "required": [ "cislo", "datumDo", "hlasovani", "datumOd" ]
             }
           }
         },

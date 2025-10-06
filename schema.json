@@ -516,11 +516,8 @@
                     }
                   }
                 }
-              },
-              "oneOf": [
-                { "required": [ "number", "date", "votingRecords" ] },
-                { "required": [ "number", "dateTo", "votingRecords", "dateFrom" ] }
-              ]
+              },    
+              "required": [ "number", "dateTo", "votingRecords", "dateFrom" ] 
             }
           }
         },
